@@ -1,0 +1,7 @@
+RequestID:
+  name: x-request-id
+  in: header
+  required: false
+  schema:
+    type: string
+  description: Request identity for logs and tracing

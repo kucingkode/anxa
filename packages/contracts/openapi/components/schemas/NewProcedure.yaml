@@ -1,0 +1,21 @@
+type: object
+required: [patientId, visitId, code]
+properties:
+  patientId:
+    type: string
+    format: uuid
+  visitId:
+    type: string
+    format: uuid
+  code:
+    type: string
+    description: Procedure code chosen from the procedure reference list.
+  codeDisplay:
+    type: string
+  status:
+    type: string
+  performedAt:
+    type: string
+    format: date-time
+  notes:
+    type: string

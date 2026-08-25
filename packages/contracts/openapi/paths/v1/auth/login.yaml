@@ -1,0 +1,27 @@
+post:
+  tags: [Auth]
+  operationId: login
+  summary: Authenticate a user (email + password)
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/LoginRequest.yaml"
+  responses:
+    "200":
+      description: Authenticated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/LoginResponse.yaml"
+    "400":
+      $ref: "../../../components/responses.yaml#/BadRequest"
+    "401":
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"

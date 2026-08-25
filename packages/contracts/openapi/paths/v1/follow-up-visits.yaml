@@ -1,0 +1,72 @@
+get:
+  tags: [Follow-up Visits]
+  operationId: listFollowUpVisits
+  summary: List / search follow-up visits
+  security:
+    - bearerAuth: []
+  parameters:
+    - $ref: "../../components/parameters.yaml#/Limit"
+    - $ref: "../../components/parameters.yaml#/Offset"
+    - name: patientId
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uuid
+    - name: status
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [booked, arrived, fulfilled, cancelled, noshow]
+    - name: date
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+      description: Scheduled date/time of the return visit.
+  responses:
+    "200":
+      description: A list of follow-up visits
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../components/schemas/FollowUpVisit.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../components/responses.yaml#/Forbidden"
+    "500":
+      $ref: "../../components/responses.yaml#/InternalServerError"
+post:
+  tags: [Follow-up Visits]
+  operationId: createFollowUpVisit
+  summary: Schedule a follow-up visit
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/NewFollowUpVisit.yaml"
+  responses:
+    "201":
+      description: Follow-up visit created
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/FollowUpVisit.yaml"
+    "400":
+      $ref: "../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../components/responses.yaml#/NotFound"
+    "500":
+      $ref: "../../components/responses.yaml#/InternalServerError"

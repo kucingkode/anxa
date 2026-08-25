@@ -1,0 +1,253 @@
+# yaml-language-server: $schema=https://spec.openapis.org/oas/3.1/schema/2025-09-15
+openapi: 3.1.0
+info:
+  title: SIMK — Sistem Informasi & Manajemen Klinik API
+  version: 0.1.0
+  description: |
+    Contract-first API for the clinic information & management system.
+    Domain models are aligned with Indonesia SatuSehat (HL7 FHIR R4).
+servers:
+  - url: http://localhost:3000
+    description: Local development
+tags:
+  - name: Health
+    description: Service liveness / readiness.
+  - name: Auth
+    description: Login / logout and session management.
+  - name: Patients
+    description: Patient registry (mapped to FHIR `Patient`).
+  - name: Queues
+    description: Visit queue management (mapped to FHIR `Appointment` / `Slot`).
+  - name: Visits
+    description: Clinical visits (mapped to FHIR `Encounter`).
+  - name: Follow-up Visits
+    description: Scheduled return visits (mapped to FHIR `Appointment`).
+  - name: Observations
+    description: Clinical measurements (mapped to FHIR `Observation`).
+  - name: Conditions
+    description: Diagnosis records (mapped to FHIR `Condition`).
+  - name: Procedures
+    description: Performed-procedure records (mapped to FHIR `Procedure`).
+  - name: Products
+    description: Product catalog (mapped to FHIR `Medication` / `Device`).
+  - name: Manufacturers
+    description: Manufacturer catalog (mapped to FHIR `Organization`).
+  - name: Users
+    description: System accounts and role assignment.
+  - name: Roles
+    description: Custom roles and permissions (dynamic RBAC).
+  - name: Condition References
+    description: Admin-managed diagnosis reference list.
+  - name: Procedure References
+    description: Admin-managed procedure reference list.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  headers:
+    RequestID:
+      $ref: ./components/headers.yaml#/RequestID
+  parameters:
+    Limit:
+      $ref: ./components/parameters.yaml#/Limit
+    IfMatch:
+      $ref: ./components/parameters.yaml#/IfMatch
+  responses:
+    BadRequest:
+      $ref: ./components/responses.yaml#/BadRequest
+    Unauthorized:
+      $ref: ./components/responses.yaml#/Unauthorized
+    Forbidden:
+      $ref: ./components/responses.yaml#/Forbidden
+    NotFound:
+      $ref: ./components/responses.yaml#/NotFound
+    Conflict:
+      $ref: ./components/responses.yaml#/Conflict
+    InternalServerError:
+      $ref: ./components/responses.yaml#/InternalServerError
+    PreconditionFailed:
+      $ref: ./components/responses.yaml#/PreconditionFailed
+  schemas:
+    Health:
+      $ref: ./components/schemas/Health.yaml
+    Error:
+      $ref: ./components/schemas/Error.yaml
+    Patient:
+      $ref: ./components/schemas/Patient.yaml
+    NewPatient:
+      $ref: ./components/schemas/NewPatient.yaml
+    UpdatePatient:
+      $ref: ./components/schemas/UpdatePatient.yaml
+    LoginRequest:
+      $ref: ./components/schemas/LoginRequest.yaml
+    LoginResponse:
+      $ref: ./components/schemas/LoginResponse.yaml
+    RefreshResponse:
+      $ref: ./components/schemas/RefreshResponse.yaml
+    AuthUser:
+      $ref: ./components/schemas/AuthUser.yaml
+    Role:
+      $ref: ./components/schemas/Role.yaml
+    NewRole:
+      $ref: ./components/schemas/NewRole.yaml
+    UpdateRole:
+      $ref: ./components/schemas/UpdateRole.yaml
+    User:
+      $ref: ./components/schemas/User.yaml
+    NewUser:
+      $ref: ./components/schemas/NewUser.yaml
+    UpdateUser:
+      $ref: ./components/schemas/UpdateUser.yaml
+    Queue:
+      $ref: ./components/schemas/Queue.yaml
+    NewQueue:
+      $ref: ./components/schemas/NewQueue.yaml
+    UpdateQueue:
+      $ref: ./components/schemas/UpdateQueue.yaml
+    Visit:
+      $ref: ./components/schemas/Visit.yaml
+    FollowUpVisit:
+      $ref: ./components/schemas/FollowUpVisit.yaml
+    NewFollowUpVisit:
+      $ref: ./components/schemas/NewFollowUpVisit.yaml
+    UpdateFollowUpVisit:
+      $ref: ./components/schemas/UpdateFollowUpVisit.yaml
+    Observation:
+      $ref: ./components/schemas/Observation.yaml
+    NewObservation:
+      $ref: ./components/schemas/NewObservation.yaml
+    UpdateObservation:
+      $ref: ./components/schemas/UpdateObservation.yaml
+    ObservationStatusUpdate:
+      $ref: ./components/schemas/ObservationStatusUpdate.yaml
+    Condition:
+      $ref: ./components/schemas/Condition.yaml
+    NewCondition:
+      $ref: ./components/schemas/NewCondition.yaml
+    UpdateCondition:
+      $ref: ./components/schemas/UpdateCondition.yaml
+    Procedure:
+      $ref: ./components/schemas/Procedure.yaml
+    NewProcedure:
+      $ref: ./components/schemas/NewProcedure.yaml
+    UpdateProcedure:
+      $ref: ./components/schemas/UpdateProcedure.yaml
+    ConditionReference:
+      $ref: ./components/schemas/ConditionReference.yaml
+    NewConditionReference:
+      $ref: ./components/schemas/NewConditionReference.yaml
+    UpdateConditionReference:
+      $ref: ./components/schemas/UpdateConditionReference.yaml
+    ProcedureReference:
+      $ref: ./components/schemas/ProcedureReference.yaml
+    NewProcedureReference:
+      $ref: ./components/schemas/NewProcedureReference.yaml
+    UpdateProcedureReference:
+      $ref: ./components/schemas/UpdateProcedureReference.yaml
+    Product:
+      $ref: ./components/schemas/Product.yaml
+    NewProduct:
+      $ref: ./components/schemas/NewProduct.yaml
+    UpdateProduct:
+      $ref: ./components/schemas/UpdateProduct.yaml
+    Manufacturer:
+      $ref: ./components/schemas/Manufacturer.yaml
+    NewManufacturer:
+      $ref: ./components/schemas/NewManufacturer.yaml
+    UpdateManufacturer:
+      $ref: ./components/schemas/UpdateManufacturer.yaml
+paths:
+  /v1/health:
+    $ref: ./paths/v1/health.yaml
+
+  # Auth
+  /v1/auth/login:
+    $ref: ./paths/v1/auth/login.yaml
+  /v1/auth/logout:
+    $ref: ./paths/v1/auth/logout.yaml
+  /v1/auth/refresh:
+    $ref: ./paths/v1/auth/refresh.yaml
+
+  # Patients
+  /v1/patients:
+    $ref: ./paths/v1/patients.yaml
+  /v1/patients/{patientId}:
+    $ref: ./paths/v1/patients/{patientId}.yaml
+  /v1/patients/{patientId}/visits:
+    $ref: ./paths/v1/patients/{patientId}/visits.yaml
+
+  # Queues
+  /v1/queues:
+    $ref: ./paths/v1/queues.yaml
+  /v1/queues/{queueId}:
+    $ref: ./paths/v1/queues/{queueId}.yaml
+
+  # Visits
+  /v1/visits:
+    $ref: ./paths/v1/visits.yaml
+  /v1/visits/{visitId}:
+    $ref: ./paths/v1/visits/{visitId}.yaml
+
+  # Follow-up visits
+  /v1/follow-up-visits:
+    $ref: ./paths/v1/follow-up-visits.yaml
+  /v1/follow-up-visits/{followUpVisitId}:
+    $ref: ./paths/v1/follow-up-visits/{followUpVisitId}.yaml
+
+  # Observations
+  /v1/observations:
+    $ref: ./paths/v1/observations.yaml
+  /v1/observations/{observationId}:
+    $ref: ./paths/v1/observations/{observationId}.yaml
+  /v1/observations/{observationId}/status:
+    $ref: ./paths/v1/observations/{observationId}/status.yaml
+
+  # Conditions
+  /v1/conditions:
+    $ref: ./paths/v1/conditions.yaml
+  /v1/conditions/{conditionId}:
+    $ref: ./paths/v1/conditions/{conditionId}.yaml
+
+  # Procedures
+  /v1/procedures:
+    $ref: ./paths/v1/procedures.yaml
+  /v1/procedures/{procedureId}:
+    $ref: ./paths/v1/procedures/{procedureId}.yaml
+
+  # Products
+  /v1/products:
+    $ref: ./paths/v1/products.yaml
+  /v1/products/{productId}:
+    $ref: ./paths/v1/products/{productId}.yaml
+
+  # Manufacturers
+  /v1/manufacturers:
+    $ref: ./paths/v1/manufacturers.yaml
+  /v1/manufacturers/{manufacturerId}:
+    $ref: ./paths/v1/manufacturers/{manufacturerId}.yaml
+
+  # Users
+  /v1/users:
+    $ref: ./paths/v1/users.yaml
+  /v1/users/{userId}:
+    $ref: ./paths/v1/users/{userId}.yaml
+
+  # Roles (dynamic RBAC)
+  /v1/roles:
+    $ref: ./paths/v1/roles.yaml
+  /v1/roles/{roleId}:
+    $ref: ./paths/v1/roles/{roleId}.yaml
+
+  # Condition references (admin)
+  /v1/condition-references:
+    $ref: ./paths/v1/condition-references.yaml
+  /v1/condition-references/{conditionReferenceId}:
+    $ref: ./paths/v1/condition-references/{conditionReferenceId}.yaml
+
+  # Procedure references (admin)
+  /v1/procedure-references:
+    $ref: ./paths/v1/procedure-references.yaml
+  /v1/procedure-references/{procedureReferenceId}:
+    $ref: ./paths/v1/procedure-references/{procedureReferenceId}.yaml

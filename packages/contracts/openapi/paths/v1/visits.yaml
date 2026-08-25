@@ -1,0 +1,36 @@
+get:
+  tags: [Visits]
+  operationId: listVisits
+  summary: List / search clinical visits
+  security:
+    - bearerAuth: []
+  parameters:
+    - $ref: "../../components/parameters.yaml#/Limit"
+    - $ref: "../../components/parameters.yaml#/Offset"
+    - name: patientId
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uuid
+    - name: status
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [planned, arrived, triaged, in-progress, finished, cancelled]
+  responses:
+    "200":
+      description: A list of visits
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../components/schemas/Visit.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../components/responses.yaml#/Forbidden"
+    "500":
+      $ref: "../../components/responses.yaml#/InternalServerError"

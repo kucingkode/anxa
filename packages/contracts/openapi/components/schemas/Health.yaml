@@ -1,0 +1,9 @@
+type: object
+required: [status, uptime]
+properties:
+  status:
+    type: string
+    enum: [ok]
+  uptime:
+    type: number
+    description: Process uptime in seconds.

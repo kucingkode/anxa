@@ -1,0 +1,63 @@
+get:
+  tags: [Manufacturers]
+  operationId: listManufacturers
+  summary: List / search manufacturers
+  security:
+    - bearerAuth: []
+  parameters:
+    - $ref: "../../components/parameters.yaml#/Limit"
+    - $ref: "../../components/parameters.yaml#/Offset"
+    - name: query
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Search by name or identifier.
+  responses:
+    "200":
+      description: A list of manufacturers
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../components/schemas/Manufacturer.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../components/responses.yaml#/Forbidden"
+    "500":
+      $ref: "../../components/responses.yaml#/InternalServerError"
+post:
+  tags: [Manufacturers]
+  operationId: createManufacturer
+  summary: Add a manufacturer
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/NewManufacturer.yaml"
+  responses:
+    "201":
+      description: Manufacturer created
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/Manufacturer.yaml"
+    "400":
+      $ref: "../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../components/responses.yaml#/Forbidden"
+    "409":
+      description: Duplicate manufacturer identifier
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/Error.yaml"
+    "500":
+      $ref: "../../components/responses.yaml#/InternalServerError"

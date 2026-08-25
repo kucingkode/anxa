@@ -1,0 +1,100 @@
+get:
+  tags: [Users]
+  operationId: getUser
+  summary: Get a user by id
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    "200":
+      description: User found
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/User.yaml"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"
+patch:
+  tags: [Users]
+  operationId: updateUser
+  summary: Update a system user
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/UpdateUser.yaml"
+  responses:
+    "200":
+      description: User updated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/User.yaml"
+    "400":
+      $ref: "../../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "409":
+      description: Email already in use
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"
+delete:
+  tags: [Users]
+  operationId: deleteUser
+  summary: Delete a system user (cannot delete yourself)
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    "204":
+      description: User deleted
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "409":
+      description: Cannot delete your own account
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"

@@ -1,0 +1,15 @@
+type: object
+required: [name, code, unit, manufacturerId]
+properties:
+  name:
+    type: string
+    maxLength: 255
+  code:
+    type: string
+  unit:
+    type: string
+  manufacturerId:
+    type: string
+    format: uuid
+  description:
+    type: string

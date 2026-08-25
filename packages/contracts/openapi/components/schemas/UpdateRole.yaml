@@ -1,0 +1,13 @@
+type: object
+properties:
+  name:
+    type: string
+    maxLength: 100
+  description:
+    type: string
+    maxLength: 255
+  permissions:
+    type: array
+    items:
+      type: string
+    description: Permission strings in the form "resource:action" (e.g. "patients:write").

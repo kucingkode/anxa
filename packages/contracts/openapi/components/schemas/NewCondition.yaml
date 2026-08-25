@@ -1,0 +1,18 @@
+type: object
+required: [patientId, visitId, code]
+properties:
+  patientId:
+    type: string
+    format: uuid
+  visitId:
+    type: string
+    format: uuid
+  code:
+    type: string
+    description: Diagnosis code chosen from the condition reference list.
+  codeDisplay:
+    type: string
+  clinicalStatus:
+    type: string
+  notes:
+    type: string

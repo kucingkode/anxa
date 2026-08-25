@@ -1,0 +1,26 @@
+{
+  "name": "@simk/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "OpenAPI 3.1 contract for SIMK + generated types and typed fetch client",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "generate": "node scripts/generate.mjs",
+    "build": "pnpm generate",
+    "typecheck": "tsc --noEmit",
+    "docs": "redocly build-docs -o index.html ./openapi/openapi.yaml"
+  },
+  "dependencies": {
+    "openapi-fetch": "^0.13.5"
+  },
+  "devDependencies": {
+    "@apidevtools/swagger-parser": "^12.1.0",
+    "@redocly/cli": "^2.46.2",
+    "openapi-typescript": "^7.6.1",
+    "typescript": "^5.8.3",
+    "yaml": "^2.7.0"
+  }
+}

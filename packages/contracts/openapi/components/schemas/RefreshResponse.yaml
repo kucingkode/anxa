@@ -1,0 +1,9 @@
+type: object
+required: [accessToken, user]
+properties:
+  accessToken:
+    type: string
+    description: New short-lived JWT access token.
+    example: eyJhbGciOiJIUzI1NiJ9...
+  user:
+    $ref: "./AuthUser.yaml"

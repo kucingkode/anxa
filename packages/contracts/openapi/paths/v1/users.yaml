@@ -1,0 +1,70 @@
+get:
+  tags: [Users]
+  operationId: listUsers
+  summary: List / search system users
+  security:
+    - bearerAuth: []
+  parameters:
+    - $ref: "../../components/parameters.yaml#/Limit"
+    - $ref: "../../components/parameters.yaml#/Offset"
+    - name: query
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Search by name or email.
+    - name: roleId
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uuid
+      description: Filter users by role.
+  responses:
+    "200":
+      description: A list of users
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../components/schemas/User.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../components/responses.yaml#/Forbidden"
+    "500":
+      $ref: "../../components/responses.yaml#/InternalServerError"
+post:
+  tags: [Users]
+  operationId: createUser
+  summary: Add a system user
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/NewUser.yaml"
+  responses:
+    "201":
+      description: User created
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/User.yaml"
+    "400":
+      $ref: "../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../components/responses.yaml#/Forbidden"
+    "409":
+      description: Email already in use
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/Error.yaml"
+    "500":
+      $ref: "../../components/responses.yaml#/InternalServerError"

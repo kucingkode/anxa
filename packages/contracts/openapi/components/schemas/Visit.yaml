@@ -1,0 +1,32 @@
+type: object
+description: |
+  A patient's clinical visit. Anchors queues, observations, and clinical
+  records. Mapped to FHIR R4 `Encounter`.
+required: [id, patientId, status, class, createdAt, updatedAt]
+properties:
+  id:
+    type: string
+    format: uuid
+  patientId:
+    type: string
+    format: uuid
+  status:
+    type: string
+    enum: [planned, arrived, triaged, in-progress, finished, cancelled]
+    description: FHIR R4 `Encounter.status`.
+  class:
+    type: string
+    example: AMB
+    description: FHIR R4 `Encounter.class` code (e.g. AMB, EMER, IMP).
+  periodStart:
+    type: string
+    format: date-time
+  periodEnd:
+    type: string
+    format: date-time
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

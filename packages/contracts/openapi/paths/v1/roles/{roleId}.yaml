@@ -1,0 +1,100 @@
+get:
+  tags: [Roles]
+  operationId: getRole
+  summary: Get a role by id
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: roleId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    "200":
+      description: Role found
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Role.yaml"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"
+patch:
+  tags: [Roles]
+  operationId: updateRole
+  summary: Update a role
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: roleId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/UpdateRole.yaml"
+  responses:
+    "200":
+      description: Role updated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Role.yaml"
+    "400":
+      $ref: "../../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "409":
+      description: System role cannot be modified / role name already in use
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"
+delete:
+  tags: [Roles]
+  operationId: deleteRole
+  summary: Delete a custom role
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: roleId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    "204":
+      description: Role deleted
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "409":
+      description: System role cannot be deleted / role still assigned to users
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"

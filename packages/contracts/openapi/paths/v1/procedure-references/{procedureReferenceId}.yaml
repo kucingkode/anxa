@@ -1,0 +1,94 @@
+get:
+  tags: [Procedure References]
+  operationId: getProcedureReference
+  summary: Get a procedure reference by id
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: procedureReferenceId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    "200":
+      description: Procedure reference found
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/ProcedureReference.yaml"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"
+patch:
+  tags: [Procedure References]
+  operationId: updateProcedureReference
+  summary: Update a procedure reference
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: procedureReferenceId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/UpdateProcedureReference.yaml"
+  responses:
+    "200":
+      description: Procedure reference updated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/ProcedureReference.yaml"
+    "400":
+      $ref: "../../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"
+delete:
+  tags: [Procedure References]
+  operationId: deleteProcedureReference
+  summary: Delete a procedure reference (blocked while referenced by a Procedure)
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: procedureReferenceId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    "204":
+      description: Procedure reference deleted
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "409":
+      description: Reference is still in use by a clinical Procedure
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"

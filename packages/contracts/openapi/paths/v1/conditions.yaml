@@ -1,0 +1,65 @@
+get:
+  tags: [Conditions]
+  operationId: listConditions
+  summary: List / search patient conditions
+  security:
+    - bearerAuth: []
+  parameters:
+    - $ref: "../../components/parameters.yaml#/Limit"
+    - $ref: "../../components/parameters.yaml#/Offset"
+    - name: patientId
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uuid
+    - name: visitId
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uuid
+  responses:
+    "200":
+      description: A list of conditions
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../components/schemas/Condition.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../components/responses.yaml#/Forbidden"
+    "500":
+      $ref: "../../components/responses.yaml#/InternalServerError"
+post:
+  tags: [Conditions]
+  operationId: createCondition
+  summary: Add a patient condition (diagnosis)
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/NewCondition.yaml"
+  responses:
+    "201":
+      description: Condition created
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/Condition.yaml"
+    "400":
+      $ref: "../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../components/responses.yaml#/NotFound"
+    "500":
+      $ref: "../../components/responses.yaml#/InternalServerError"

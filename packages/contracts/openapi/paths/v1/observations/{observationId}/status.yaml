@@ -1,0 +1,45 @@
+patch:
+  tags: [Observations]
+  operationId: updateObservationStatus
+  summary: Update observation status (state-machine transition)
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: observationId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    - $ref: "../../../../components/parameters.yaml#/IfMatch"
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../../components/schemas/ObservationStatusUpdate.yaml"
+  responses:
+    "200":
+      description: Observation status updated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../components/schemas/Observation.yaml"
+    "400":
+      $ref: "../../../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../../components/responses.yaml#/NotFound"
+    "409":
+      description: Invalid status transition
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../components/schemas/Error.yaml"
+    "412":
+      $ref: "../../../../components/responses.yaml#/PreconditionFailed"
+    "500":
+      $ref: "../../../../components/responses.yaml#/InternalServerError"

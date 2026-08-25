@@ -1,0 +1,12 @@
+type: object
+required: [statusCode, error, message]
+properties:
+  statusCode:
+    type: integer
+    example: 400
+  error:
+    type: string
+    example: Bad Request
+  message:
+    type: string
+    example: Invalid request body

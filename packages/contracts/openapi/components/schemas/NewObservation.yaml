@@ -1,0 +1,24 @@
+type: object
+required: [patientId, visitId, code, value]
+properties:
+  patientId:
+    type: string
+    format: uuid
+  visitId:
+    type: string
+    format: uuid
+  code:
+    type: string
+    description: LOINC / SNOMED observation code.
+  codeDisplay:
+    type: string
+  value:
+    type: number
+  unit:
+    type: string
+  status:
+    type: string
+    enum: [preliminary, final, amended, cancelled, entered-in-error]
+    default: preliminary
+  interpretation:
+    type: string

@@ -1,0 +1,29 @@
+type: object
+description: |
+  Scheduled return visit for a patient. Mapped to FHIR R4 `Appointment`.
+required: [id, patientId, date, status, createdAt, updatedAt]
+properties:
+  id:
+    type: string
+    format: uuid
+  patientId:
+    type: string
+    format: uuid
+  date:
+    type: string
+    format: date-time
+    description: Scheduled date and time of the return visit.
+  status:
+    type: string
+    enum: [booked, arrived, fulfilled, cancelled, noshow]
+    description: |
+      `booked → arrived → fulfilled`; `booked → cancelled` or `noshow`.
+  reason:
+    type: string
+    maxLength: 500
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

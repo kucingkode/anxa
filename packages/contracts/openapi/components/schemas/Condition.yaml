@@ -1,0 +1,30 @@
+type: object
+description: |
+  Diagnosis record attached to a patient visit. Mapped to FHIR R4 `Condition`.
+required: [id, patientId, visitId, code, createdAt, updatedAt]
+properties:
+  id:
+    type: string
+    format: uuid
+  patientId:
+    type: string
+    format: uuid
+  visitId:
+    type: string
+    format: uuid
+  code:
+    type: string
+    description: Diagnosis code chosen from the condition reference list.
+  codeDisplay:
+    type: string
+  clinicalStatus:
+    type: string
+    description: FHIR R4 `Condition.clinicalStatus` (e.g. active, resolved).
+  notes:
+    type: string
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

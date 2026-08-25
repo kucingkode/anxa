@@ -1,0 +1,9 @@
+type: object
+required: [status]
+properties:
+  status:
+    type: string
+    enum: [waiting, in-service, done, cancelled]
+    description: |
+      Next state per the queue state machine
+      (`waiting → in-service → done`; `waiting`/`in-service → cancelled`).

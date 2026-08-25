@@ -1,0 +1,13 @@
+type: object
+description: |
+  Editable observation fields. `status` is changed through the dedicated
+  status-transition endpoint instead.
+properties:
+  value:
+    type: number
+  unit:
+    type: string
+  codeDisplay:
+    type: string
+  interpretation:
+    type: string

@@ -1,0 +1,22 @@
+type: object
+description: Maker of a product. Mapped to FHIR R4 `Organization`.
+required: [id, name, identifier, createdAt, updatedAt]
+properties:
+  id:
+    type: string
+    format: uuid
+  name:
+    type: string
+    maxLength: 255
+  identifier:
+    type: string
+    description: Business identifier of the manufacturer.
+  contact:
+    type: string
+    description: Contact details (phone / email / address).
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

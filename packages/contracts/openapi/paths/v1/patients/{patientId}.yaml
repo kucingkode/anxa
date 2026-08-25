@@ -1,0 +1,94 @@
+get:
+  tags: [Patients]
+  operationId: getPatient
+  summary: Get a patient by id
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: patientId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    "200":
+      description: Patient found
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Patient.yaml"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"
+patch:
+  tags: [Patients]
+  operationId: updatePatient
+  summary: Update patient demographics (identifier is immutable)
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: patientId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/UpdatePatient.yaml"
+  responses:
+    "200":
+      description: Patient updated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Patient.yaml"
+    "400":
+      $ref: "../../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"
+delete:
+  tags: [Patients]
+  operationId: deletePatient
+  summary: Soft-delete a patient (blocked while a queue/visit is active)
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: patientId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    "204":
+      description: Patient deleted
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "409":
+      description: Patient has an active queue entry or visit
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"

@@ -1,0 +1,32 @@
+get:
+  tags: [Patients, Visits]
+  operationId: listPatientVisits
+  summary: List a patient's visits
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: patientId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    - $ref: "../../../../components/parameters.yaml#/Limit"
+    - $ref: "../../../../components/parameters.yaml#/Offset"
+  responses:
+    "200":
+      description: A list of visits
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../../../components/schemas/Visit.yaml"
+    "401":
+      $ref: "../../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../../components/responses.yaml#/NotFound"
+    "500":
+      $ref: "../../../../components/responses.yaml#/InternalServerError"

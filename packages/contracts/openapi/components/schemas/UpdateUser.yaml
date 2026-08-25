@@ -1,0 +1,17 @@
+type: object
+properties:
+  name:
+    type: string
+    maxLength: 255
+  email:
+    type: string
+    format: email
+    maxLength: 255
+  password:
+    type: string
+    minLength: 8
+    maxLength: 128
+  roleId:
+    type: string
+    format: uuid
+    description: Reference to the Role to assign to the user.

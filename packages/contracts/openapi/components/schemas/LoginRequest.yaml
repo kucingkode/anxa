@@ -1,0 +1,13 @@
+type: object
+required: [email, password]
+properties:
+  email:
+    type: string
+    format: email
+    maxLength: 255
+    example: user@clinic.id
+  password:
+    type: string
+    minLength: 8
+    maxLength: 128
+    example: StrongPassword123

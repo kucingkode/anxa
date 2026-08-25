@@ -1,0 +1,26 @@
+type: object
+description: |
+  Patient registry entry. Mirrors the minimal set of FHIR R4 `Patient`
+  fields required by SatuSehat.
+required: [id, name, identifier, gender, createdAt]
+properties:
+  id:
+    type: string
+    description: Internal resource id.
+  name:
+    type: string
+    description: Full name (FHIR HumanName.text).
+  identifier:
+    type: string
+    description: NIK (Nomor Induk Kependudukan) or SatuSehat IHS number.
+  gender:
+    type: string
+    enum: [male, female, other, unknown]
+  birthDate:
+    type: string
+    format: date
+  phone:
+    type: string
+  createdAt:
+    type: string
+    format: date-time

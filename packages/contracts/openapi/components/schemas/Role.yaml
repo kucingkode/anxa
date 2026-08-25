@@ -1,0 +1,26 @@
+type: object
+required: [id, name, permissions, isSystem, createdAt, updatedAt]
+properties:
+  id:
+    type: string
+    format: uuid
+  name:
+    type: string
+    maxLength: 100
+  description:
+    type: string
+    maxLength: 255
+  permissions:
+    type: array
+    items:
+      type: string
+    description: Permission strings in the form "resource:action" (e.g. "patients:write").
+  isSystem:
+    type: boolean
+    description: System roles are seeded and cannot be deleted or have their permissions reduced.
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

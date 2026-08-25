@@ -1,0 +1,30 @@
+type: object
+required: [id, patientId, status, version, createdAt, updatedAt]
+properties:
+  id:
+    type: string
+    format: uuid
+  patientId:
+    type: string
+    format: uuid
+    description: Reference to the queued `Patient`.
+  visitId:
+    type: string
+    format: uuid
+    description: Reference to the `Visit` once the queue reaches service (nullable).
+  status:
+    type: string
+    enum: [waiting, in-service, done, cancelled]
+    description: |
+      `waiting → in-service → done`; `waiting`/`in-service → cancelled`.
+      Terminal states: `done`, `cancelled`.
+  version:
+    type: integer
+    minimum: 0
+    description: Optimistic-locking version; bump on every update.
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

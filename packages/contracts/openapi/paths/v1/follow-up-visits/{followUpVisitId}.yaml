@@ -1,0 +1,70 @@
+get:
+  tags: [Follow-up Visits]
+  operationId: getFollowUpVisit
+  summary: Get a follow-up visit by id
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: followUpVisitId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    "200":
+      description: Follow-up visit found
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/FollowUpVisit.yaml"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"
+patch:
+  tags: [Follow-up Visits]
+  operationId: updateFollowUpVisit
+  summary: Update a follow-up visit (date / status transition)
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: followUpVisitId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/UpdateFollowUpVisit.yaml"
+  responses:
+    "200":
+      description: Follow-up visit updated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/FollowUpVisit.yaml"
+    "400":
+      $ref: "../../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "409":
+      description: Invalid status transition
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"

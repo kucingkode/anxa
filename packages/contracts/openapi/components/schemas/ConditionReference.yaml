@@ -1,0 +1,19 @@
+type: object
+description: Admin-managed diagnosis reference list entry.
+required: [id, code, display, createdAt, updatedAt]
+properties:
+  id:
+    type: string
+    format: uuid
+  code:
+    type: string
+    description: Diagnosis code (e.g. ICD-10 / SNOMED).
+  display:
+    type: string
+    description: Human-readable diagnosis name.
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

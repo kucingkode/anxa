@@ -1,0 +1,15 @@
+post:
+  tags: [Auth]
+  operationId: refresh
+  summary: Refresh the access token using the refresh cookie
+  responses:
+    "200":
+      description: Refreshed
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/RefreshResponse.yaml"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"

@@ -1,0 +1,103 @@
+get:
+  tags: [Queues]
+  operationId: getQueue
+  summary: Get a queue entry by id
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: queueId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    "200":
+      description: Queue entry found
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Queue.yaml"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"
+patch:
+  tags: [Queues]
+  operationId: updateQueue
+  summary: Change queue status (optimistic locking via `If-Match`)
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: queueId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    - $ref: "../../../components/parameters.yaml#/IfMatch"
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/UpdateQueue.yaml"
+  responses:
+    "200":
+      description: Queue entry updated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Queue.yaml"
+    "400":
+      $ref: "../../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "409":
+      description: Invalid status transition
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+    "412":
+      $ref: "../../../components/responses.yaml#/PreconditionFailed"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"
+delete:
+  tags: [Queues]
+  operationId: deleteQueue
+  summary: Soft-delete a queue entry (closes the underlying visit, if any)
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: queueId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    "204":
+      description: Queue entry deleted
+    "401":
+      $ref: "../../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../../components/responses.yaml#/Forbidden"
+    "404":
+      $ref: "../../../components/responses.yaml#/NotFound"
+    "409":
+      description: Queue entry cannot be deleted in its current state
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Error.yaml"
+    "500":
+      $ref: "../../../components/responses.yaml#/InternalServerError"

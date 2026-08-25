@@ -1,0 +1,63 @@
+get:
+  tags: [Condition References]
+  operationId: listConditionReferences
+  summary: List / search the condition reference list
+  security:
+    - bearerAuth: []
+  parameters:
+    - $ref: "../../components/parameters.yaml#/Limit"
+    - $ref: "../../components/parameters.yaml#/Offset"
+    - name: query
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Search by code or display name.
+  responses:
+    "200":
+      description: A list of condition references
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../../components/schemas/ConditionReference.yaml"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../components/responses.yaml#/Forbidden"
+    "500":
+      $ref: "../../components/responses.yaml#/InternalServerError"
+post:
+  tags: [Condition References]
+  operationId: createConditionReference
+  summary: Add a condition reference
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/NewConditionReference.yaml"
+  responses:
+    "201":
+      description: Condition reference created
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/ConditionReference.yaml"
+    "400":
+      $ref: "../../components/responses.yaml#/BadRequest"
+    "401":
+      $ref: "../../components/responses.yaml#/Unauthorized"
+    "403":
+      $ref: "../../components/responses.yaml#/Forbidden"
+    "409":
+      description: Duplicate code
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/Error.yaml"
+    "500":
+      $ref: "../../components/responses.yaml#/InternalServerError"

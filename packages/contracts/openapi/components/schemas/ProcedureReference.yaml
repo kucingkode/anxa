@@ -1,0 +1,19 @@
+type: object
+description: Admin-managed procedure reference list entry.
+required: [id, code, display, createdAt, updatedAt]
+properties:
+  id:
+    type: string
+    format: uuid
+  code:
+    type: string
+    description: Procedure code (e.g. ICD-9-CM / SNOMED).
+  display:
+    type: string
+    description: Human-readable procedure name.
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

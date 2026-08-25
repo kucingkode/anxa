@@ -1,0 +1,69 @@
+BadRequest:
+  description: Invalid request body
+  headers:
+    x-request-id:
+      $ref: "./headers.yaml#/RequestID"
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas/Error.yaml"
+
+Unauthorized:
+  description: Authentication required
+  headers:
+    x-request-id:
+      $ref: "./headers.yaml#/RequestID"
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas/Error.yaml"
+
+Forbidden:
+  description: Insufficient permissions
+  headers:
+    x-request-id:
+      $ref: "./headers.yaml#/RequestID"
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas/Error.yaml"
+
+NotFound:
+  description: Resource not found
+  headers:
+    x-request-id:
+      $ref: "./headers.yaml#/RequestID"
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas/Error.yaml"
+
+Conflict:
+  description: Conflict with the current resource state
+  headers:
+    x-request-id:
+      $ref: "./headers.yaml#/RequestID"
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas/Error.yaml"
+
+InternalServerError:
+  description: Internal server error
+  headers:
+    x-request-id:
+      $ref: "./headers.yaml#/RequestID"
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas/Error.yaml"
+
+PreconditionFailed:
+  description: Optimistic-lock version mismatch (`If-Match`)
+  headers:
+    x-request-id:
+      $ref: "./headers.yaml#/RequestID"
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas/Error.yaml"

@@ -1,0 +1,30 @@
+type: object
+description: |
+  Catalog item managed by the logistic admin. Mapped to FHIR R4
+  `Medication` / `Device`.
+required: [id, name, code, unit, manufacturerId, createdAt, updatedAt]
+properties:
+  id:
+    type: string
+    format: uuid
+  name:
+    type: string
+    maxLength: 255
+  code:
+    type: string
+    description: Product code (e.g. KFA code).
+  unit:
+    type: string
+    description: Unit of measure (e.g. tablet, strip, box).
+  manufacturerId:
+    type: string
+    format: uuid
+    description: Reference to the `Manufacturer`.
+  description:
+    type: string
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

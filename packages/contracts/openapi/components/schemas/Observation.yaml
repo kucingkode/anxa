@@ -1,0 +1,46 @@
+type: object
+description: |
+  Clinical measurement (vital sign, lab result) anchored to a Visit.
+  Mapped to FHIR R4 `Observation`.
+required: [id, patientId, visitId, code, value, status, version, createdAt, updatedAt]
+properties:
+  id:
+    type: string
+    format: uuid
+  patientId:
+    type: string
+    format: uuid
+  visitId:
+    type: string
+    format: uuid
+  code:
+    type: string
+    description: LOINC / SNOMED observation code.
+  codeDisplay:
+    type: string
+    description: Human-readable display of the code.
+  value:
+    type: number
+    description: Measured quantity value.
+  unit:
+    type: string
+    description: Unit of measure (e.g. mmHg, mg/dL).
+  status:
+    type: string
+    enum: [preliminary, final, amended, cancelled, entered-in-error]
+    description: |
+      `preliminary → final → amended`; any non-terminal state → `cancelled`
+      or `entered-in-error`.
+  interpretation:
+    type: string
+    description: Optional interpretation (e.g. normal, abnormal).
+  version:
+    type: integer
+    minimum: 0
+    description: Optimistic-locking version; bump on every update.
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time
