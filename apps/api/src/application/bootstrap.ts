@@ -19,10 +19,7 @@ import { DrizzleRefreshTokensRepository } from "../infrastructure/out/database/d
 import { DrizzleRolesRepository } from "../infrastructure/out/database/drizzle/repositories/roles-repository.js";
 import { HttpSatuSehat } from "../infrastructure/out/satusehat/http-satuSehat.js";
 import type { Cache } from "../domain/ports/out/cache.js";
-import type {
-  Database,
-  TxContext,
-} from "../domain/ports/out/database/database.js";
+import type { Database, TxContext } from "../domain/ports/out/database/database.js";
 import type { ConditionsRepository } from "../domain/ports/out/database/conditions-repository.js";
 import type { FollowUpVisitsRepository } from "../domain/ports/out/database/follow-up-visits-repository.js";
 import type { ObservationsRepository } from "../domain/ports/out/database/observations-repository.js";
@@ -39,7 +36,7 @@ import type { RefreshTokensRepository } from "../domain/ports/out/database/refre
 import type { RolesRepository } from "../domain/ports/out/database/roles-repository.js";
 import type { SatuSehat } from "../domain/ports/out/satuSehat.js";
 import { initLogger, type LogLevel } from "../observability/logging.js";
-import { loadConfig } from "./config.js";
+import { AppConfig, loadConfig } from "./config.js";
 import { seedRolesAndAdmin } from "./seed.js";
 import { CreatePatientService } from "./services/patients/create-patient.js";
 import { DeletePatientService } from "./services/patients/delete-patient.js";
@@ -110,8 +107,6 @@ import { ListProcedureReferencesService } from "./services/procedure-references/
 import { UpdateProcedureReferenceService } from "./services/procedure-references/update-procedure-reference.js";
 
 export type BuildAppOptions<TxCtx extends TxContext<any>> = {
-  logger?: boolean;
-  logLevel?: LogLevel;
   db: Database<TxCtx>;
   patientsRepository: PatientsRepository<TxCtx>;
   queuesRepository: QueuesRepository<TxCtx>;
@@ -127,12 +122,9 @@ export type BuildAppOptions<TxCtx extends TxContext<any>> = {
   manufacturersRepository: ManufacturersRepository<TxCtx>;
   conditionReferencesRepository: ConditionReferencesRepository<TxCtx>;
   procedureReferencesRepository: ProcedureReferencesRepository<TxCtx>;
-  jwtSecret: string;
-  jwtExpiresIn: string;
-  refreshTokenTtlSeconds: number;
-  cookieSecure?: boolean;
   cache?: Cache;
   satuSehat?: SatuSehat;
+  config: AppConfig;
 };
 
 /**
@@ -142,12 +134,11 @@ export type BuildAppOptions<TxCtx extends TxContext<any>> = {
  * adapter and returns a Fastify instance (without listening, so tests can
  * `inject`).
  */
-export function buildApp<TxCtx extends TxContext<any>>(
-  options: BuildAppOptions<TxCtx>,
-) {
+export function buildApp<TxCtx extends TxContext<any>>(options: BuildAppOptions<TxCtx>) {
+  const { config } = options;
+
   initLogger({
-    logLevel:
-      options.logLevel ?? (options.logger === false ? "silent" : "info"),
+    logLevel: config.logLevel,
     base: { service: SERVICE_NAME, version: SERVICE_VERSION },
   });
 
@@ -290,18 +281,18 @@ export function buildApp<TxCtx extends TxContext<any>>(
       usersRepository: options.usersRepository,
       rolesRepository: options.rolesRepository,
       refreshTokensRepository: options.refreshTokensRepository,
-      jwtSecret: options.jwtSecret,
-      jwtExpiresIn: options.jwtExpiresIn,
-      refreshTokenTtlSeconds: options.refreshTokenTtlSeconds,
+      jwtSecret: config.jwt.secret,
+      jwtExpiresIn: config.jwt.expiresIn,
+      refreshTokenTtlSeconds: config.refreshTokenTtlSeconds,
     }),
     refreshService: new RefreshTokenService({
       db: options.db,
       usersRepository: options.usersRepository,
       rolesRepository: options.rolesRepository,
       refreshTokensRepository: options.refreshTokensRepository,
-      jwtSecret: options.jwtSecret,
-      jwtExpiresIn: options.jwtExpiresIn,
-      refreshTokenTtlSeconds: options.refreshTokenTtlSeconds,
+      jwtSecret: config.jwt.secret,
+      jwtExpiresIn: config.jwt.expiresIn,
+      refreshTokenTtlSeconds: config.refreshTokenTtlSeconds,
     }),
     logoutService: new LogoutService({
       db: options.db,
@@ -310,15 +301,15 @@ export function buildApp<TxCtx extends TxContext<any>>(
     }),
     verifyTokenService: new VerifyTokenService({
       cache: options.cache,
-      jwtSecret: options.jwtSecret,
+      jwtSecret: config.jwt.secret,
     }),
     getAuthUserService: new GetAuthUserService({
       db: options.db,
       usersRepository: options.usersRepository,
       rolesRepository: options.rolesRepository,
     }),
-    cookieSecure: options.cookieSecure ?? false,
-    refreshTokenTtlSeconds: options.refreshTokenTtlSeconds,
+    cookieSecure: config.cookieSecure ?? false,
+    refreshTokenTtlSeconds: config.refreshTokenTtlSeconds,
     createRoleService: new CreateRoleService({
       db: options.db,
       rolesRepository: options.rolesRepository,
@@ -442,7 +433,9 @@ export function buildApp<TxCtx extends TxContext<any>>(
     }),
   };
 
-  return createFastifyRestServer(deps);
+  return createFastifyRestServer(deps, {
+    allowedOrigins: config.allowedOrigins,
+  });
 }
 
 /**
@@ -482,7 +475,11 @@ export async function bootstrap() {
   const procedureReferencesRepository = new DrizzleProcedureReferencesRepository();
 
   const cache = new RedisCache(
-    new Redis({ host: config.redis.host, port: config.redis.port }),
+    new Redis({
+      host: config.redis.host,
+      port: config.redis.port,
+      password: config.redis.password,
+    }),
   );
 
   const satuSehat = new HttpSatuSehat(config.satusehat);
@@ -497,7 +494,6 @@ export async function bootstrap() {
   });
 
   return buildApp({
-    logLevel: config.logLevel,
     db,
     patientsRepository,
     queuesRepository,
@@ -513,11 +509,8 @@ export async function bootstrap() {
     manufacturersRepository,
     conditionReferencesRepository,
     procedureReferencesRepository,
-    jwtSecret: config.jwt.secret,
-    jwtExpiresIn: config.jwt.expiresIn,
-    refreshTokenTtlSeconds: config.refreshTokenTtlSeconds,
-    cookieSecure: config.cookieSecure,
     cache,
     satuSehat,
+    config,
   });
 }

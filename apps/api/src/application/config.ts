@@ -20,11 +20,13 @@ export type DatabaseConfig = {
 export type RedisConfig = {
   host: string;
   port: number;
+  password?: string;
 };
 
 export type AppConfig = {
   host: string;
   port: number;
+  allowedOrigins: string[];
   logLevel: LogLevel;
   database: DatabaseConfig;
   redis: RedisConfig;
@@ -50,6 +52,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
   return {
     host: env.HOST ?? "0.0.0.0",
     port: Number(env.PORT ?? 3000),
+    allowedOrigins: env.ALLOWED_ORIGINS?.split(",") ?? [],
     logLevel: (env.LOG_LEVEL as LogLevel | undefined) ?? "info",
     database: {
       host: env.DB_HOST ?? "localhost",
@@ -62,14 +65,11 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     redis: {
       host: env.REDIS_HOST ?? "localhost",
       port: Number(env.REDIS_PORT ?? 6379),
+      password: env.REDIS_PASSWORD,
     },
     satusehat: {
-      baseUrl:
-        env.SATUSEHAT_BASE_URL ??
-        "https://api-satusehat.kemkes.go.id/fhir-r4/v1",
-      authUrl:
-        env.SATUSEHAT_AUTH_URL ??
-        "https://api-satusehat.kemkes.go.id/oauth2/v1",
+      baseUrl: env.SATUSEHAT_BASE_URL ?? "https://api-satusehat.kemkes.go.id/fhir-r4/v1",
+      authUrl: env.SATUSEHAT_AUTH_URL ?? "https://api-satusehat.kemkes.go.id/oauth2/v1",
       clientId: env.SATUSEHAT_CLIENT_ID ?? "",
       clientSecret: env.SATUSEHAT_CLIENT_SECRET ?? "",
       organizationId: env.SATUSEHAT_ORGANIZATION_ID ?? "",

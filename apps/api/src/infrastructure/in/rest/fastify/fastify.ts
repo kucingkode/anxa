@@ -22,14 +22,17 @@ import { proceduresRoutes } from "./routes/procedures-routes.js";
 import { queuesRoutes } from "./routes/queues-routes.js";
 import { visitsRoutes } from "./routes/visits-routes.js";
 
-export function createFastifyRestServer(deps: FastifyRestServerDeps) {
-  const log = createAdapterLogger(
-    "Fastify",
-    REST_SERVER_PORT,
-    INBOUND_DIRECTION,
-  );
+export type FastifyRestServerConfig = {
+  allowedOrigins: string[];
+};
 
-  const app = createApp(log);
+export function createFastifyRestServer(
+  deps: FastifyRestServerDeps,
+  config: FastifyRestServerConfig,
+) {
+  const log = createAdapterLogger("Fastify", REST_SERVER_PORT, INBOUND_DIRECTION);
+
+  const app = createApp(log, config.allowedOrigins);
 
   app.addHook("onSend", async (req, reply) => {
     reply.header("x-request-id", req.id);

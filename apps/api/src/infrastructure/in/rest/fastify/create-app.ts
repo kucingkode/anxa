@@ -6,10 +6,14 @@ import { openapiSpec } from "@simk/contracts";
 import Fastify from "fastify";
 import type { Logger } from "../../../../observability/logging.js";
 
-export function createApp(log: Logger) {
+export function createApp(log: Logger, allowedOrigins: string[]) {
   const app = Fastify({ loggerInstance: log });
 
-  app.register(cors, { origin: true, credentials: true });
+  app.register(cors, {
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, // Set to true if you are sending cookies or session tokens
+  });
   app.register(cookie);
 
   // Contract-first: serve the canonical OpenAPI spec (from @simk/contracts).
